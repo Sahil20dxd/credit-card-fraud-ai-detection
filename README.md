@@ -1,52 +1,83 @@
-# **Credit Card Fraud Detection - NumPy Operations**
+# **Credit Card Fraud Detection using AI & NumPy**
 
-This project demonstrates the use of **NumPy** for implementing a custom **k-Nearest Neighbors (k-NN)** classifier, statistical analysis, and data processing on a **Credit Card Fraud Detection dataset** (`creditcard_2023.csv`).
+This project demonstrates how **Artificial Intelligence** and **NumPy** can be used to build effective models for detecting **fraudulent credit card transactions**. It includes a **custom implementation of the k-Nearest Neighbors (k-NN)** algorithm using only NumPy, as well as comparisons with popular **AI models from scikit-learn** like **Naïve Bayes** and built-in k-NN.
 
-It is developed as part of an assignment to showcase how **NumPy functions** can be used in practical **AI scenarios** without relying on higher-level libraries like pandas for core operations.
+Fraud detection is a high-stakes binary classification problem, and this project provides insight into **how AI models can be trained, tested, and validated** to classify transactions as either **legitimate** or **fraudulent**, even in the face of class imbalance and anonymized features.
 
 ---
 
 ## **📁 Files**
 
-- `Assignment_2.py` — Python script implementing a **NumPy-based k-NN algorithm** and comparing it with **scikit-learn’s** implementation. Also includes testing with **Naïve Bayes**.
-- `creditcard_2023.csv` — Dataset containing anonymized transaction data, including **PCA-transformed features** and fraud labels.
-- `graph.py` — Script used to generate and **visualize graphs** of performance trends.
-- `Explanation & Documentation.docx` — Report explaining the **methodology**, **testing strategies**, and **results**.
+- `Assignment_2.py` — Core script implementing:
+  - Custom **k-NN classifier using NumPy**
+  - scikit-learn **k-NN** and **Naïve Bayes** models
+  - Performance evaluation (Accuracy & F1 Score)
+- `creditcard_2023.csv` — Real-world dataset of credit card transactions, including anonymized features and fraud labels.
+- `graph.py` — Python script to generate and visualize **trends, accuracy comparisons**, and other insights.
+- `Explanation & Documentation.docx` — Detailed report covering AI approach, testing methodology, observations, and conclusions.
 
 ---
 
 ## **🎯 Project Objective**
 
-The main goals are to:
+This project focuses on:
 
-- Load and preprocess a large dataset using **NumPy**
-- Implement a **custom k-NN classifier** from scratch using **vectorized operations**
-- Compare performance with **scikit-learn’s k-NN** and **Naïve Bayes**
-- Perform **basic statistical analysis** using NumPy (mean, standard deviation, etc.)
-- Generate visual insights from results
-
-This serves as a foundational example of building AI models and performing data manipulation using **NumPy**, showing how low-level libraries can be powerful tools for learning and prototyping.
+- **Classifying** credit card transactions as **fraudulent or not** (binary classification)
+- Understanding the **inner workings of k-NN** by building it from scratch with **NumPy**
+- Evaluating multiple AI models (k-NN and Naïve Bayes) using **real imbalanced data**
+- Comparing results between **custom logic** and **prebuilt AI tools**
+- Providing explainable metrics and graphs to justify AI model selection
 
 ---
 
-## **🔧 Key NumPy Operations**
+## **🤖 AI Techniques & Models Used**
 
-- **Distance Calculations**: Euclidean and Manhattan distances calculated using vectorized NumPy functions
-- **Majority Voting**: Label prediction using `np.bincount()` and `argmax()`
-- **Data Normalization**: Standardizing features using NumPy math operations
-- **Matrix Manipulation**: Transpose, broadcasting, slicing, and filtering
+### ✅ 1. **Custom k-NN Classifier (NumPy-based)**
+- Manually computes distances using Euclidean/Manhattan metrics
+- Uses NumPy’s array and sorting functions for prediction logic
+- Produces similar performance to scikit-learn’s model — validating the approach
+
+### ✅ 2. **Scikit-learn k-NN**
+- Hyperparameter tuning: `k`, weighting (`uniform` vs `distance`), distance metric (`p=1`, `p=2`)
+- Uses `KNeighborsClassifier` and `cross_val_score` for robust evaluation
+
+### ✅ 3. **Naïve Bayes Classifier**
+- Fast, probabilistic model for comparison
+- Highlights trade-offs between simplicity and predictive power
 
 ---
 
-## **📌 Sample Code Snippet**
+## **🧠 Classification Focus: Why AI for Fraud Detection?**
+
+- Credit card fraud detection is **imbalanced and noisy** — perfect for AI-driven insights
+- AI models can **learn patterns** even in anonymized, transformed features (like PCA)
+- Your k-NN implementation and experiments show how **different configurations** (like `k=3` with distance weighting) lead to better fraud detection
+- **Naïve Bayes**, while fast, struggles slightly due to its assumption of feature independence — demonstrating why **model selection matters in real AI applications**
+
+---
+
+## **📈 Performance Summary**
+
+| Model                     | Accuracy | F1 Score |
+|---------------------------|----------|----------|
+| Custom k-NN (NumPy)       | 0.97     | 0.97     |
+| Scikit-learn k-NN (best)  | 0.97     | 0.97     |
+| Naïve Bayes (sklearn)     | 0.93     | 0.93     |
+
+- Best performance was achieved with `k=3`, `weights='distance'`, and `p=1` (Manhattan Distance)
+- F1 Score is emphasized due to **class imbalance**
+
+---
+
+## **📊 Sample NumPy Logic for AI Classification**
 
 ```python
-# Normalize dataset using NumPy
-X_normalized = (X - np.mean(X, axis=0)) / np.std(X, axis=0)
+# Normalize data
+X_norm = (X - np.mean(X, axis=0)) / np.std(X, axis=0)
 
-# Compute Euclidean distances from a test sample
+# Compute distances from test sample
 distances = np.sqrt(np.sum((X_train - x_test) ** 2, axis=1))
 
-# Predict using majority vote
-k_nearest = y_train[np.argsort(distances)[:k]]
-prediction = np.bincount(k_nearest).argmax()
+# Predict using majority voting
+neighbors = y_train[np.argsort(distances)[:k]]
+prediction = np.bincount(neighbors).argmax()
